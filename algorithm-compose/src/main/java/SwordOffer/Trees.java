@@ -257,7 +257,7 @@ public class Trees {
         deserializeStr = index == -1 ? "" : deserializeStr.substring(index + 1);
         if (node.equals("#"))
             return null;
-        int val = Integer.valueOf(node);
+        int val = Integer.parseInt(node);
         TreeNode t = new TreeNode(val);
         t.left = Deserialize();
         t.right = Deserialize();
