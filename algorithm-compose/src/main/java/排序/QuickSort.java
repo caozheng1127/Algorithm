@@ -69,8 +69,35 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        QuickSort q = new QuickSort();
-        q.sort();
+        int a[] = {11, 33, 44, 2, 0, 1, 49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 4, 62, 99, 98, 54, 56, 17,
+                18, 23, 34, 15, 35, 25, 53, 51, 90};
+        quickSort1(a, 0, a.length - 1);
+        for (int i = 0; i < a.length; i++) {
+            System.out.print(a[i] + "  ");
+        }
     }
 
+
+    public static void quickSort1(int[] nums, int low, int high) {
+        int start = low;
+        int end = high;
+        int base = nums[low];
+        while (low < high) {
+            while (low < high && base <= nums[high]) {
+                high--;
+            }
+            nums[low] = nums[high];
+            while (low < high && base >= nums[low]) {
+                low++;
+            }
+            nums[high] = nums[low];
+            nums[low] = base;
+        }
+        if (low - start > 1) {
+            quickSort1(nums, start, low - 1);
+        }
+        if (end - high > 1) {
+            quickSort1(nums, high + 1, end);
+        }
+    }
 }
