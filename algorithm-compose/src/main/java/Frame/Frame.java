@@ -8,19 +8,6 @@ import java.util.Queue;
 public class Frame {
 
     /**
-     * for 选择 in 选择列表:
-     * # 做选择
-     * 将该选择从选择列表移除
-     * 路径.add(选择)
-     * backtrack(路径, 选择列表)
-     * # 撤销选择
-     * 路径.remove(选择)
-     * 将该选择再加入选择列表
-     */
-
-    List<List<Integer>> res = new LinkedList<>();
-
-    /**
      * 快速排序的逻辑是，若要对 nums[lo..hi] 进行排序，我们先找一个分界点 p，通过交换元素使得 nums[lo..p-1] 都小于等于 nums[p]，
      * 且 nums[p+1..hi] 都大于 nums[p]，然后递归地去 nums[lo..p-1] 和 nums[p+1..hi] 中寻找新的分界点，最后整个数组就被排序了。
      * 快速排序的代码框架如下：
@@ -149,6 +136,17 @@ public class Frame {
     }
 
     /**
+     * for 选择 in 选择列表:
+     * # 做选择
+     * 将该选择从选择列表移除
+     * 路径.add(选择)
+     * backtrack(路径, 选择列表)
+     * # 撤销选择
+     * 路径.remove(选择)
+     * 将该选择再加入选择列表
+     */
+
+    /**
      * 回溯
      * <p>
      * result = []
@@ -162,6 +160,8 @@ public class Frame {
      * backtrack(路径, 选择列表)
      * 撤销选择
      */
+
+    List<List<Integer>> res = new LinkedList<>();
 
     /* 主函数，输入一组不重复的数字，返回它们的全排列 */
     List<List<Integer>> permute(int[] nums) {
@@ -201,34 +201,6 @@ public class Frame {
         }
     }
 
-    int minDepth(TreeNode root) {
-        if (root == null) return 0;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-        // root 本身就是一层，depth 初始化为 1
-        int depth = 1;
-
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            /* 将当前队列中的所有节点向四周扩散 */
-            for (int i = 0; i < sz; i++) {
-                TreeNode cur = q.poll();
-                /* 判断是否到达终点 */
-                if (cur.left == null && cur.right == null)
-                    return depth;
-                /* 将 cur 的相邻节点加入队列 */
-                if (cur.left != null)
-                    q.offer(cur.left);
-                if (cur.right != null)
-                    q.offer(cur.right);
-            }
-            /* 这里增加步数 */
-            depth++;
-        }
-        return depth;
-    }
-
-
     // 计算从起点 start 到终点 target 的最近距离
 //    int BFS(Node start, Node target) {
 //        Queue<Node> q; // 核心数据结构
@@ -258,6 +230,33 @@ public class Frame {
 //            step++;
 //        }
 //    }
+
+    int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        // root 本身就是一层，depth 初始化为 1
+        int depth = 1;
+
+        while (!q.isEmpty()) {
+            int sz = q.size();
+            /* 将当前队列中的所有节点向四周扩散 */
+            for (int i = 0; i < sz; i++) {
+                TreeNode cur = q.poll();
+                /* 判断是否到达终点 */
+                if (cur.left == null && cur.right == null)
+                    return depth;
+                /* 将 cur 的相邻节点加入队列 */
+                if (cur.left != null)
+                    q.offer(cur.left);
+                if (cur.right != null)
+                    q.offer(cur.right);
+            }
+            /* 这里增加步数 */
+            depth++;
+        }
+        return depth;
+    }
 
     public static class TreeNode {
         int val;
