@@ -1,4 +1,4 @@
-package SwordOffer;
+package Frame.SwordOffer;
 
 public class Greedy {
 
