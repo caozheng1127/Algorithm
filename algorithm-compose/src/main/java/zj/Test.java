@@ -26,6 +26,32 @@ public class Test {
         return null;
     }
 
+    //最长回文子串
+    private int max = 0;
+    private String res2 = "";
+
+    public String longestPalindrome(String s) {
+        if (s.length() == 1) return s;
+        for (int i = 0; i < s.length() - 1; i++) {
+            help(s, i, i);
+            help(s, i, i + 1);
+        }
+        return res2;
+    }
+
+    private void help(String s, int low, int high) {
+        while (low >= 0 && high < s.length()) {
+            if (s.charAt(low) == s.charAt(high)) {
+                if (high - low + 1 > max) {
+                    max = high - low + 1;
+                    res2 = s.substring(low, high + 1);
+                }
+                low--;
+                high++;
+            } else return;
+        }
+    }
+
     //无重复字符的最长子串
     public int subString(String s) {
         if (StringUtils.isBlank(s)) {
@@ -46,7 +72,7 @@ public class Test {
         return cnt;
     }
 
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next = null;
 
@@ -757,6 +783,14 @@ public class Test {
         return res1;
     }
 
+    private int findMax(TreeNode root) {
+        if (root == null) return 0;
+        int left = Math.max(0, findMax(root.left));
+        int right = Math.max(0, findMax(root.right));
+        res1 = Math.max(res1, left + right + root.val);
+        return Math.max(left, right) + root.val;
+    }
+
     //组合总数
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
@@ -789,14 +823,6 @@ public class Test {
             }
         }
         return dp[m - 1][n - 1];
-    }
-
-    private int findMax(TreeNode root) {
-        if (root == null) return 0;
-        int left = Math.max(0, findMax(root.left));
-        int right = Math.max(0, findMax(root.right));
-        res1 = Math.max(res1, left + right + root.val);
-        return Math.max(left, right) + root.val;
     }
 
     //朋友圈
@@ -953,6 +979,73 @@ public class Test {
                 cache.remove(iterator.next());
             }
             cache.put(key, value);  //插入到链表末尾
+        }
+    }
+
+    //最长公共前缀
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        if (strs.length == 1) return strs[0];
+
+        StringBuilder sb = new StringBuilder();
+        out:
+        for (int i = 0; i < strs[0].length(); i++) {
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[j].charAt(i) != strs[0].charAt(i)) break out;
+            }
+            sb.append(strs[0].charAt(i));
+        }
+        return sb.toString();
+    }
+
+    //缺失的第一个正数
+    public int firstMissingPositive(int[] nums) {
+        int len = nums.length;
+
+        for (int i = 0; i < len; i++) {
+            while (nums[i] > 0 && nums[i] <= len && nums[nums[i] - 1] != nums[i]) {
+                int t = nums[nums[i] - 1];
+                nums[nums[i] - 1] = nums[i];
+                nums[i] = t;
+            }
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (nums[i] != i + 1) return i + 1;
+        }
+        return len + 1;
+    }
+
+    //前序中序遍历构造二叉树
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return buildTree(preorder, 0, inorder, inorder.length - 1, 0);
+    }
+
+    public TreeNode buildTree(int[] preorder, int idx, int[] inorder, int end, int start) {
+        if (idx >= preorder.length || start > end) return null;
+        TreeNode root = new TreeNode(preorder[idx]);
+        int i;
+        for (i = end; i >= start; i--) {
+            if (preorder[idx] == inorder[i]) break;
+        }
+        root.left = buildTree(preorder, idx + 1, inorder, i - 1, start);
+        root.right = buildTree(preorder, idx + i - start + 1, inorder, end, i + 1);
+        return root;
+    }
+
+    //颜色分类
+    public void sortColors(int[] arr) {
+        if (arr == null || arr.length < 2) return;
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = i; j > 0; j--) {
+                if (arr[j] < arr[j - 1]) {
+                    int t = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = t;
+                } else {
+                    break;
+                }
+            }
         }
     }
 }
